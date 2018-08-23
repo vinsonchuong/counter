@@ -26,7 +26,7 @@ test('shows a 0 count by default', async t => {
 test('allows incrementing by 1', async t => {
     const tab = await openTab(chrome, 'http://localhost:8080');
 
-    const incrementButton = await findElement(tab, '.increment');
+    const incrementButton = await findElement(tab, '.increment', 'Increment');
     await clickElement(incrementButton);
 
     const updatedCountDiv = await findElement(tab, '.counter');
@@ -36,7 +36,7 @@ test('allows incrementing by 1', async t => {
 test('allows decrementing by 1', async t => {
     const tab = await openTab(chrome, 'http://localhost:8080');
 
-    const decrementButton = await findElement(tab, '.decrement');
+    const decrementButton = await findElement(tab, '.decrement', 'Decrement');
     await clickElement(decrementButton);
 
     const updatedAgainCountDiv = await findElement(tab, '.counter');
