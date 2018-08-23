@@ -1,16 +1,41 @@
+import * as React from 'react'
 import test from 'ava'
-import { increment } from './counter'
+import { promisify } from 'util'
+import { render } from 'react-dom'
+import { Simulate } from 'react-dom/test-utils'
 import { JSDOM } from 'jsdom'
+import Counter from './counter'
 
-test('incrementing', t => {
-    const { window } = new JSDOM(`
-        <!doctype html>
-        <div class="counter">0</div>
-    `);
-    global.window = window;
-    global.document = window.document;
+const sleep = promisify(setTimeout);
 
-    increment(1);
+test('having a default count of 42', async t => {
+    const { window } = new JSDOM('<!doctype html>');
+    const container = window.document.createElement('div');
+    render(<Counter />, container);
 
-    t.is(document.querySelector('.counter').textContent, '1')
+    await sleep(100);
+
+    t.is(container.querySelector('.counter').textContent, '42')
+});
+
+test('incrementing by 1', async t => {
+    const { window } = new JSDOM('<!doctype html>');
+    const container = window.document.createElement('div');
+    render(<Counter />, container);
+
+    await sleep(100);
+
+    Simulate.click(container.querySelector('.increment'));
+    t.is(container.querySelector('.counter').textContent, '43')
+});
+
+test('decrementing by 1', async t => {
+    const { window } = new JSDOM('<!doctype html>');
+    const container = window.document.createElement('div');
+    render(<Counter />, container);
+
+    await sleep(100);
+
+    Simulate.click(container.querySelector('.decrement'));
+    t.is(container.querySelector('.counter').textContent, '41')
 });

@@ -1,9 +1,4 @@
 <!doctype html>
 <meta charset="utf-8">
-<script type="module">
-    import { increment } from './counter.js'
-    window.increment = increment
-</script>
-<div class="counter">0</div>
-<button class="increment" onclick="increment(1)">Increment</button>
-<button class="decrement" onclick="increment(-1)">Decrement</button>
+<script async src="ui.js"></script>
+<div id="root"></div>
