@@ -1,16 +1,44 @@
 import test from 'ava'
 import { spawn } from 'child_process'
 import waitPort from 'wait-port'
-import fetch from 'cross-fetch'
+import { openChrome, closeBrowser, openTab, findElement, clickElement } from 'puppet-strings'
 
-test('it works!', async t => {
-    const server = spawn('yarn', ['start']);
+let server, chrome;
+test.before(async () => {
+    server = spawn('yarn', ['start']);
     await waitPort({ port: 8080, timeout: 5000 });
 
-    const response = await fetch('http://localhost:8080');
-    const body = await response.text();
-
-    t.true(body.includes('Hello World!'));
-
+    chrome = await openChrome();
+});
+test.after.always(async () => {
     server.kill();
+
+    await closeBrowser(chrome);
+});
+
+test('shows a 0 count by default', async t => {
+    const tab = await openTab(chrome, 'http://localhost:8080');
+
+    const countDiv = await findElement(tab, '.counter');
+    t.is(countDiv.innerText, '0');
+});
+
+test('allows incrementing by 1', async t => {
+    const tab = await openTab(chrome, 'http://localhost:8080');
+
+    const incrementButton = await findElement(tab, '.increment');
+    await clickElement(incrementButton);
+
+    const updatedCountDiv = await findElement(tab, '.counter');
+    t.is(updatedCountDiv.innerText, '1');
+});
+
+test('allows decrementing by 1', async t => {
+    const tab = await openTab(chrome, 'http://localhost:8080');
+
+    const decrementButton = await findElement(tab, '.decrement');
+    await clickElement(decrementButton);
+
+    const updatedAgainCountDiv = await findElement(tab, '.counter');
+    t.is(updatedAgainCountDiv.innerText, '-1');
 });

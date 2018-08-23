@@ -1,3 +1,18 @@
 <!doctype html>
 <meta charset="utf-8">
-<div>Hello World!</div>
+<script>
+    function increment() {
+        const counter = document.querySelector('.counter');
+        const currentCount = Number(counter.textContent);
+        counter.textContent = String(currentCount + 1);
+    }
+
+    function decrement() {
+        const counter = document.querySelector('.counter');
+        const currentCount = Number(counter.textContent);
+        counter.textContent = String(currentCount - 1);
+    }
+</script>
+<div class="counter">0</div>
+<button class="increment" onclick="increment()"></button>
+<button class="decrement" onclick="decrement()"></button>
