@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "test": "ava -v",
+    "start": "python -m SimpleHTTPServer 8080"
+  },
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "cross-fetch": "^2.2.2",
+    "wait-port": "^0.2.2"
+  }
+}
